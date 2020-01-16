@@ -1,1 +1,1 @@
-{"jo":{"balance":9844},"mo":{"balance":"10020.0011101010101010080007000020111111"}}
+{"users":{"jo":{"balance":9824.7},"mo":{"balance":87240.3},"no":{"balance":50}},"logs":{"1579208545685":{"sender":"mo","reciever":"jo","amount":10},"1579209448511":{"sender":"jo","reciever":"mo","amount":3},"1579209557014":{"sender":"jo","reciever":"mo","amount":3},"1579209579238":{"sender":"jo","reciever":"mo","amount":3.3}}}

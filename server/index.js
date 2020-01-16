@@ -6,10 +6,6 @@ var cors = require('cors')
 
 app.use(cors())
 
-database = {
-    jo: {balance: 100}
-}
-
 app.use(express.json());
 
 
@@ -26,16 +22,17 @@ app.post('/send', (req, res)=> {
     var sendRequest = req.body;
     var sender = sendRequest.Sender;
     var reciever = sendRequest.Reciever;
-    var amount = sendRequest.Amount;
+    var amount = Number(sendRequest.Amount);
     // test correct request
     console.log(`Transfer request of ${amount} from ${sender} to ${reciever}`);
     var returnCode = database1.transfer(sender, reciever, amount);
     if (returnCode != 0) {
         res.status(400).send(returnCode);
     }
-    
-    res.sendStatus(200);
-    })
+    else {
+        res.sendStatus(200);
+    }
+})
 
 
 

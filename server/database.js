@@ -9,22 +9,28 @@ function loadDatabase() {
 
 module.exports = {
     getBalance: function getBalance(username){
-        return database[username];
+        return database.users[username];
     },
     
     transfer: function transfer(sender, reciever, amount){
-        if (!(database.hasOwnProperty(sender))) {
+        if (!(database.users.hasOwnProperty(sender))) {
             return "Account does not exsist";
         }   
-        if (!(database.hasOwnProperty(reciever))) {
+        if (!(database.users.hasOwnProperty(reciever))) {
             return "Reciever does not exsits";
         }
-        if(database[sender].balance < amount) {
+        if(database.users[sender].balance < amount) {
             return "Out of funds"
         }
     
-        database[sender].balance -= amount;    
-        database[reciever].balance += amount;
+        const timestamp = Date.now();
+        database.users[sender].balance -= amount;    
+        database.users[reciever].balance += amount;
+        database.logs[timestamp] = {
+            "sender" : sender,
+            "reciever": reciever,
+            "amount": amount
+        }
         // not async
         fs.writeFileSync('data.json', JSON.stringify(database));
         return 0;
