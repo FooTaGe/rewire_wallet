@@ -27,7 +27,8 @@ class SendForm extends React.Component {
 
   handleAmountInputChange(event) {
     const value = event.target.value;
-    const match = value.match(/^\d+\.?\d{0,2}$/gm);
+   
+    const match = value.match(/^\d*\.?\d{0,2}$/gm);
     const newValue = match == null ? this.state.sendAmount : match;
     this.setState({
       toName: this.state.toName,
@@ -55,7 +56,7 @@ class SendForm extends React.Component {
               </label>
               <label>
                 Amount:
-              <input type="number" value={this.state.sendAmount} onChange={(event) => this.handleAmountInputChange(event)} min="0.01" step="0.01"  placeholder="eg 25.4" name="sendAmount" />
+              <input type="text" value={this.state.sendAmount} onChange={(event) => this.handleAmountInputChange(event)} placeholder="eg 25.4" name="sendAmount" />
               </label>
               <input type="submit" value="Send" />
             </form>
