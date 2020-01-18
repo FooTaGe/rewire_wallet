@@ -11,19 +11,7 @@ class SendForm extends React.Component {
     this.state = {
       toName: '',
       sendAmount: '',
-      username: this.props.username,
-      usersList: [],
     };
-  }
-
-  componentDidMount(){
-    this.getUserList();
-    console.log("state", this.state.usersList);
-  }
-
-  async getUserList() {
-    const userList = await axios.get('http://127.0.0.1:3001/namelist');
-    this.setState({usersList: userList.data});
   }
 
   handleSubmit(event) {
@@ -31,7 +19,7 @@ class SendForm extends React.Component {
     const data = {
       Reciever : this.state.toName,
       Amount: this.state.sendAmount,
-      Sender: this.state.username
+      Sender: this.props.username
     };
     const header = { headers: { 'Content-Type': 'application/json' } };
     
@@ -67,21 +55,27 @@ class SendForm extends React.Component {
             <form onSubmit={(event) => {this.handleSubmit(event);}}>
               <label>
                 Send To:
+              </label>  
                 <Autocomplete
                   id="combo-box-demo"
-                  options={this.state.usersList}
+                  options={this.props.userList}
                   // value={this.state.toName}
                   onChange={(event, value) => this.setState({toName: value.name})}
-                  getOptionLabel={option => option.name}
+                  getOptionLabel={(option) => {
+                    if (option.name !== this.props.username) {
+                      return option.name
+                    }
+                  }}
                   style={{ width: 300 }}
                   renderInput={params => (
                     <TextField {...params} label="Receiver Name" variant="outlined" fullWidth />
                   )}
                 />
+                <div></div>
               {/* <input type="text" value={this.state.toName} onChange={(event) => this.handleRecieverInputChange(event)} placeholder="JohnSmith" name="toName" /> */}
-              </label>
               
-              <TextField id="Amount" label="Type Amount" variant="outlined" onChange={(event) => this.handleAmountInputChange(event)} />
+              
+              <TextField id="Amount" label="Type Amount" variant="outlined" value={this.state.sendAmount} onChange={(event) => this.handleAmountInputChange(event)} />
               {/* <input type="text" value={this.state.sendAmount} onChange={(event) => this.handleAmountInputChange(event)} placeholder="eg 25.4" name="sendAmount" /> */}
               <Button variant="contained" type="submit" >Send</Button>
               {/* <input type="submit" value="Send" /> */}
