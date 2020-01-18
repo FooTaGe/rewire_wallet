@@ -11,6 +11,7 @@ class SendForm extends React.Component {
     this.state = {
       toName: '',
       sendAmount: '',
+      filteredUserList: [],
     };
   }
 
@@ -47,6 +48,18 @@ class SendForm extends React.Component {
     });
   }
 
+  //TODO rename to safe/new function in react lifecycle
+  componentWillReceiveProps(newProps) {
+    let filteredUserList = [];
+    for (let user of newProps.userList) {
+      if (user.name !== this.state.username) {
+        filteredUserList.push(user);
+      }
+    }
+
+    this.setState({filteredUserList: filteredUserList});
+  }
+
 
   render() {
       return (
@@ -58,9 +71,14 @@ class SendForm extends React.Component {
               </label>  
                 <Autocomplete
                   id="combo-box-demo"
-                  options={this.props.userList}
+                  options={this.state.filteredUserList}
                   // value={this.state.toName}
-                  onChange={(event, value) => this.setState({toName: value.name})}
+                  onChange={(event, value) => {
+                    console.log(value);
+                    if (value) {
+                      this.setState({toName: value.name});
+                    }
+                  }}
                   getOptionLabel={(option) => {
                     if (option.name !== this.props.username) {
                       return option.name

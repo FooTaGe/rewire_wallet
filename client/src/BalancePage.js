@@ -60,8 +60,10 @@ class BalancePage extends React.Component {
             options={this.state.userList}
             // value={this.state.toName}
             onChange={(event, value) => {
+              if (value) {
               this.setState({username: value.name});
               this.getUserBalance(value.name);
+              }
             }}
             getOptionLabel={option => option.name}
             style={{ width: 300 }}
