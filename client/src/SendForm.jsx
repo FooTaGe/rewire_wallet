@@ -1,6 +1,9 @@
 import React from 'react';
-const axios = require("axios");
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
+const axios = require("axios");
 
 class SendForm extends React.Component {
   constructor(props){
@@ -9,7 +12,18 @@ class SendForm extends React.Component {
       toName: '',
       sendAmount: '',
       username: this.props.username,
+      usersList: [],
     };
+  }
+
+  componentDidMount(){
+    this.getUserList();
+    console.log("state", this.state.usersList);
+  }
+
+  async getUserList() {
+    const userList = await axios.get('http://127.0.0.1:3001/namelist');
+    this.setState({usersList: userList.data});
   }
 
   handleSubmit(event) {
@@ -33,7 +47,6 @@ class SendForm extends React.Component {
     const match = value.match(/^\d*\.?\d{0,2}$/gm);
     const newValue = match == null ? this.state.sendAmount : match;
     this.setState({
-      toName: this.state.toName,
       sendAmount: newValue,
     });
   }
@@ -54,13 +67,24 @@ class SendForm extends React.Component {
             <form onSubmit={(event) => {this.handleSubmit(event);}}>
               <label>
                 Send To:
-              <input type="text" value={this.state.toName} onChange={(event) => this.handleRecieverInputChange(event)} placeholder="JohnSmith" name="toName" />
+                <Autocomplete
+                  id="combo-box-demo"
+                  options={this.state.usersList}
+                  // value={this.state.toName}
+                  onChange={(event, value) => this.setState({toName: value.name})}
+                  getOptionLabel={option => option.name}
+                  style={{ width: 300 }}
+                  renderInput={params => (
+                    <TextField {...params} label="Receiver Name" variant="outlined" fullWidth />
+                  )}
+                />
+              {/* <input type="text" value={this.state.toName} onChange={(event) => this.handleRecieverInputChange(event)} placeholder="JohnSmith" name="toName" /> */}
               </label>
-              <label>
-                Amount:
-              <input type="text" value={this.state.sendAmount} onChange={(event) => this.handleAmountInputChange(event)} placeholder="eg 25.4" name="sendAmount" />
-              </label>
-              <input type="submit" value="Send" />
+              
+              <TextField id="Amount" label="Type Amount" variant="outlined" onChange={(event) => this.handleAmountInputChange(event)} />
+              {/* <input type="text" value={this.state.sendAmount} onChange={(event) => this.handleAmountInputChange(event)} placeholder="eg 25.4" name="sendAmount" /> */}
+              <Button variant="contained" type="submit" >Send</Button>
+              {/* <input type="submit" value="Send" /> */}
             </form>
         </div>
       );
