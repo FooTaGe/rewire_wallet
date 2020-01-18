@@ -21,7 +21,9 @@ class SendForm extends React.Component {
     };
     const header = { headers: { 'Content-Type': 'application/json' } };
     
-    axios.post("http://127.0.0.1:3001/send", data, header).then((resp) => {this.props.onTransfer(resp.data);});
+    axios.post("http://127.0.0.1:3001/send", data, header)
+      .then((resp) => {this.props.onTransfer(resp.data);})
+      .catch((err) => {this.props.onTransfer(err.response.data);});
     
   }
 

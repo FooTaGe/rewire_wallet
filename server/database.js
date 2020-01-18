@@ -8,6 +8,14 @@ function loadDatabase() {
 
 
 module.exports = {
+    getNames: function getNames(){
+        var resp = [];
+        for (const [key, value] of Object.entries(database.users)) {
+            resp.push({name: key});
+        }
+        return resp;
+    },
+    
     getBalance: function getBalance(username){
         return database.users[username];
     },

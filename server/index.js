@@ -16,6 +16,9 @@ app.get('/balance/:name', (req, res)=> {
     var balance = database1.getBalance(userName);
     res.send(balance);})
 
+app.get('/namelist', (req, res)=> {
+    res.send(database1.getNames());
+})
 
 app.post('/send', (req, res)=> {
     // Authentication
