@@ -18,10 +18,12 @@ class BalancePage extends React.Component {
     }
     
     handleTransfer(response) {
-        if (response === "OK"){
-            this.getBalance();
-        }
-        alert(response);
+      var message = response;
+      if (response === "OK") {
+        this.getBalance();
+        message = 'Money sent succesfully';
+      }
+      alert(message);
     }
 
     async getBalance() {
